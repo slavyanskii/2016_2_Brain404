@@ -16,10 +16,7 @@ function hello (text, number) {
 }
 
 function plural(number) {
-    if (number % 10 === 1 || number === 1) {
-        return ('раз');
-    }
-    else if ((number % 10 === 2 || number % 10 === 3 || number % 10 === 4) && (number < 12 || number > 14)) {
+    if ((number % 10 === 2 || number % 10 === 3 || number % 10 === 4) && (number < 12 || number > 14)) {
         return ('раза');
     }
     else {
@@ -31,4 +28,3 @@ if (typeof  exports === 'object') {
     exports.hello = hello;
     exports.plural = plural;
 }
-
