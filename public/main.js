@@ -10,18 +10,26 @@ function onSubmit (form) {
 
 	let result = request('/users', data);
 
-	if (result === '100') {
-		form.hidden = true;
-		window.helloWorld.innerHTML = hello(data.user); 
-	}
+	form.hidden = false;
+	window.helloWorld.innerHTML = hello(data.user, result);
 
-	console.log(data, result);
+	console.log(data, result , plural(result));
 }
 
-function hello (text) {
-	return 'Привет, ' + text;
+function hello (text, num) {
+	return 'Привет, ' + text + ', ты был тут ' + num + plural(num);
+}
+
+function plural(num) {
+	let end = num % 10;
+	if ((end > 1 && end < 5) && !(num > 10 && num < 14)) {
+		return ' раза!';
+	} else {
+		return ' раз!';
+	}
 }
 
 if (typeof exports === 'object') {
 	exports.hello = hello;
+	exports.plural = plural;
 }
