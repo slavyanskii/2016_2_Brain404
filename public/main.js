@@ -2,8 +2,14 @@
 
 let userData = {};
 
-function filter (str, rules = ['КЕК']) {
-	return `//TODO: реализовать filter`;
+function filter (str, rules = ['КЕК', 'hek']) {
+	let pos = 0;
+	for (var i = 0; i < rules.length; ++i ){
+		let star = '*';
+		star = star.repeat(rules[i].length);
+		str = str.replace(new RegExp(rules[i],'g'), star);
+	}
+	return str;
 }
 
 function onLogin (form, block) {

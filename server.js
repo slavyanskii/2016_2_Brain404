@@ -23,7 +23,8 @@ app.get('/api/messages', function (req, res) {
 		technoDoc.mock(require('./api/scheme/Message')),
 		technoDoc.mock(require('./api/scheme/Message')),
 		technoDoc.mock(require('./api/scheme/Message'))
-	])
+	])});
+	
 app.post('/users', (req, res) => {
     console.log(req.body);
     res.send(String(emailCount(req.body.email)));
