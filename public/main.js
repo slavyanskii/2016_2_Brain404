@@ -4,10 +4,13 @@ let userData = {};
 
 function filter (str, rules = ['КЕК', 'hek']) {
 	let pos = 0;
-	for (var i = 0; i < rules.length; ++i ){
-		let star = '*';
-		star = star.repeat(rules[i].length);
-		str = str.replace(new RegExp(rules[i],'g'), star);
+	for (let i = 0; i < rules.length; ++i ){
+		let stars = '*';
+		let rule = rules[i];
+		stars = stars.repeat(rules[i].length);
+		str = str.replace("/\b"+rules[i]+"\b/", stars);
+		// str = str.replace(new RegExp(rule,'g'), stars);
+		console.log(str);
 	}
 	return str;
 }
@@ -74,14 +77,12 @@ function subscribe () {
 }
 
 function hello(text) {
-	return 'Привет, ' + text;
 	form.hidden = false;
-	window.helloWorld.innerHTML = hello(data.user, result);
-
+	window.helloWorld.innerHTML = helloText(data.user, result);
 	console.log(data, result , plural(result));
 }
 
-function hello (text, num) {
+function helloText (text, num) {
 	return 'Привет, ' + text + ', ты был тут ' + num + plural(num);
 }
 

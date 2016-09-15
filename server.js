@@ -28,7 +28,6 @@ app.get('/api/messages', function (req, res) {
 app.post('/users', (req, res) => {
     console.log(req.body);
     res.send(String(emailCount(req.body.email)));
-    // TODO: вернуть количество обращений
 });
 
 app.listen(process.env.PORT || 3000, () => {
