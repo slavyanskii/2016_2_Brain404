@@ -3,14 +3,13 @@
 let userData = {};
 
 function filter (str, rules = ['КЕК', 'hek']) {
-	let pos = 0;
+	// console.log(str);
 	for (let i = 0; i < rules.length; ++i ){
 		let stars = '*';
-		let rule = rules[i];
+		// let rule = new RegExp("\\b" + rules[i] + "\\b", 'gi');
 		stars = stars.repeat(rules[i].length);
-		str = str.replace("/\b"+rules[i]+"\b/", stars);
-		// str = str.replace(new RegExp(rule,'g'), stars);
-		console.log(str);
+		str = str.replace(new RegExp(rules[i], 'gi'), stars);
+		// console.log(rule);
 	}
 	return str;
 }
