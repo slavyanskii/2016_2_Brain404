@@ -2,16 +2,14 @@
 
 let userData = {};
 
-function filter (str, rules = ['КЕК', 'hek']) {
-	// console.log(str);
-	for (let i = 0; i < rules.length; ++i ){
-		let stars = '*';
-		// let rule = new RegExp("\\b" + rules[i] + "\\b", 'gi');
-		stars = stars.repeat(rules[i].length);
-		str = str.replace(new RegExp(rules[i], 'gi'), stars);
-		// console.log(rule);
-	}
-	return str;
+let filter = (str, rules = ['kek', 'hek']) => {
+  rules.forEach(rule => {
+    let star = '*';
+    let stars = star.repeat(rule.length);
+    let rgx = new RegExp('\\b' + rule + '\\b', 'gi');
+    str = str.replace(rgx, stars);
+  });
+  return str;
 }
 
 function onLogin (form, block) {
@@ -81,7 +79,7 @@ function hello(text) {
 	console.log(data, result , plural(result));
 }
 
-function helloText (text, num) {
+function helloText(text, num) {
 	return 'Привет, ' + text + ', ты был тут ' + num + plural(num);
 }
 
@@ -96,6 +94,7 @@ function plural(num) {
 
 if (typeof exports === 'object') {
 	exports.hello = hello;
+  exports.helloText = helloText;
 	exports.filter = filter;
 	exports.plural = plural;
 }
