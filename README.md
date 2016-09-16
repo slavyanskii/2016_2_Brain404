@@ -3,7 +3,6 @@
 
 A multiplayer browser game
 
-
 ### Have a try
 [https://brain404.herokuapp.com/](https://brain404.herokuapp.com/)
 
