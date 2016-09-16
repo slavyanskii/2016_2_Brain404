@@ -13,10 +13,12 @@ cd 2016_2_Brain404
 npm install
 npm start
 ```
+
 ### Developers
 * IliaBulavintsev
 * kirrok
 * slavyanskii
 * ekkertigor
+
 ### Mentor
 * avtyul
