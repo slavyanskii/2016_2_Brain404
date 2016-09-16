@@ -93,8 +93,8 @@ function plural(num) {
 }
 
 if (typeof exports === 'object') {
-	exports.hello = hello;
+  exports.hello = hello;
   exports.helloText = helloText;
-	exports.filter = filter;
-	exports.plural = plural;
+  exports.filter = filter;
+  exports.plural = plural;
 }
