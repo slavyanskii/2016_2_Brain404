@@ -6,7 +6,7 @@
     rules.forEach(rule => {
       const star = '*';
       const stars = star.repeat(rule.length);
-      const rgx = new RegExp(`\\b, ${rule}, \\b, gi`);
+      const rgx = new RegExp('\\b' + rule + '\\b', 'gi');
       str = str.replace(rgx, stars);
     });
     return str;
@@ -72,7 +72,7 @@
   }
 
   function helloText(text, num) {
-    return `Привет, ${text}, ты был тут, ${num},  ${plural(num)}`;
+    return `Привет, ${text}, ты был тут ${num}${plural(num)}`;
   }
 
   function onChat(form) {
@@ -94,6 +94,8 @@
   if (typeof exports === 'object') { // for NodeJS
     exports.hello = hello;
     exports.filter = filter;
+    exports.helloText = helloText;
+    exports.plural = plural;
   } else {
     window.onLogin = onLogin;
     window.onChat = onChat;
