@@ -1,100 +1,103 @@
-'use strict';
+(function () {
+  'use strict';
+  let userData = {};
 
-let userData = {};
+  const filter = (str, rules = ['kek', 'hek']) => {
+    rules.forEach(rule => {
+      const star = '*';
+      const stars = star.repeat(rule.length);
+      const rgx = new RegExp('\\b' + rule + '\\b', 'gi');
+      str = str.replace(rgx, stars);
+    });
+    return str;
+  };
 
-let filter = (str, rules = ['kek', 'hek']) => {
-  rules.forEach(rule => {
-    let star = '*';
-    let stars = star.repeat(rule.length);
-    let rgx = new RegExp('\\b' + rule + '\\b', 'gi');
-    str = str.replace(rgx, stars);
-  });
-  return str;
-}
+  function plural(num) {
+    const end = num % 10;
+    if ((end > 1 && end < 5) && !(num > 10 && num < 14)) {
+      return ' раза!';
+    }
+    return ' раз!';
+  }
 
-function onLogin (form, block) {
-	userData = {
-		user: form.elements['user'].value,
-		email: form.elements['email'].value
-	};
+  function createMessage(opts, isMy = false) {
+    const message = document.createElement('div');
+    const email = document.createElement('div');
 
-	 jsLogin.hidden = true;
-	 jsChat.hidden = false;
-
-	 if (userData.user) {
-		 userData.user = filter(userData.user);
-		 jsTitle.innerHTML = jsTitle.innerHTML.replace('%username%', userData.user);
-	 }
-
-	 subscribe();
-}
-
-function createMessage (opts, isMy = false) {
-	let message = document.createElement('div');
-	let email = document.createElement('div');
-
-	message.classList.add('chat__message');
-	email.classList.add('chat__email');
-	if (isMy) {
-		message.classList.add('chat__message_my');
-	} else {
-		message.style.backgroundColor = `#${technolibs.colorHash(opts.email || '')}`;
-	}
-	message.innerHTML = opts.message;
-	email.innerHTML = opts.email;
-	message.appendChild(email);
+    message.classList.add('chat__message');
+    email.classList.add('chat__email');
+    if (isMy) {
+      message.classList.add('chat__message_my');
+    } else {
+      message.style.backgroundColor = `#${technolibs.colorHash(opts.email || '')}`;
+    }
+    message.innerHTML = opts.message;
+    email.innerHTML = opts.email;
+    message.appendChild(email);
 
 
-	return message;
-}
+    return message;
+  }
 
-function onChat (form) {
-	let data = {
-		message: form.elements['message'].value,
-		email: userData.email
-	};
+  function renderChat(items) {
+    jsMessages.innerHTML = '';
+    items.forEach(item => {
+      const message = createMessage(item, item.email === userData.email);
+      jsMessages.appendChild(message);
+    });
+    jsMessages.scrollTop = jsMessages.scrollHeight;
+  }
 
-	let result = technolibs.request('/api/messages', data);
-	form.reset();
-}
+  function subscribe() {
+    technolibs.onMessage(data => {
+      renderChat(Object.keys(data).map(key => data[key]));
+    });
+  }
 
-function renderChat (items) {
-	jsMessages.innerHTML = '';
-	items.forEach(item => {
-		let message = createMessage(item, item.email === userData.email);
-		jsMessages.appendChild(message);
-	});
-	jsMessages.scrollTop = jsMessages.scrollHeight;
-}
+  function onLogin(form, block) {
+    userData = {
+      user: form.elements.user.value,
+      email: form.elements.email.value,
+    };
 
-function subscribe () {
-	technolibs.onMessage(data => {
-		renderChat(Object.keys(data).map(key => data[key]));
-	});
-}
+    jsLogin.hidden = true;
+    jsChat.hidden = false;
 
-function hello(text) {
-	form.hidden = false;
-	window.helloWorld.innerHTML = helloText(data.user, result);
-	console.log(data, result , plural(result));
-}
+    if (userData.user) {
+      userData.user = filter(userData.user);
+      jsTitle.innerHTML = jsTitle.innerHTML.replace('%username%', userData.user);
+    }
 
-function helloText(text, num) {
-	return 'Привет, ' + text + ', ты был тут ' + num + plural(num);
-}
+    subscribe();
+  }
 
-function plural(num) {
-	let end = num % 10;
-	if ((end > 1 && end < 5) && !(num > 10 && num < 14)) {
-		return ' раза!';
-	} else {
-		return ' раз!';
-	}
-}
+  function helloText(text, num) {
+    return `Привет, ${text}, ты был тут ${num}${plural(num)}`;
+  }
 
-if (typeof exports === 'object') {
-  exports.hello = hello;
-  exports.helloText = helloText;
-  exports.filter = filter;
-  exports.plural = plural;
-}
+  function onChat(form) {
+    const data = {
+      message: form.elements.message.value,
+      email: userData.email,
+    };
+
+    const result = technolibs.request('/api/messages', data);
+    form.reset();
+  }
+
+  function hello() {
+    form.hidden = false;
+    window.helloWorld.innerHTML = helloText(data.user, result);
+    console.log(data, result, plural(result));
+  }
+
+  if (typeof exports === 'object') { // for NodeJS
+    exports.hello = hello;
+    exports.filter = filter;
+    exports.helloText = helloText;
+    exports.plural = plural;
+  } else {
+    window.onLogin = onLogin;
+    window.onChat = onChat;
+  }
+})();
