@@ -1,6 +1,3 @@
 node_modules/
 .idea/
 public/api
-public/semantic
-!public/semantic/dist/semantic.min.css
-!public/semantic/dist/semantic.min.js
