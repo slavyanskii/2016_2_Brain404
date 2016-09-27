@@ -8,6 +8,7 @@
 
     constructor(options = { data: {} }) {
       this.data = options.data;
+      this.ico = options.ico;
       this.classAttrs = options.classAttrs || [];
       this.el = options.el;
       this.render();
@@ -40,10 +41,13 @@
 
     _updateHtml () {
       this.el.innerHTML = `
-        <i class="close icon"></i>
-        <div class="header">
-          ${this.data.title}
+        <div class="close_icon close_icon_${this.ico}">
+          <i class="close icon float_right"></i>
         </div>
+        <h2 class="ui center aligned icon header">
+          <i class="circular users icon"></i>
+          ${this.data.title}
+        </h2>
         <div class="description">
           <div class="form_container">
             <form class="ui form">

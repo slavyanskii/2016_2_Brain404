@@ -7,21 +7,6 @@
     let ModalForm = window.ModalForm;
 
     let mainContainer = document.querySelector('.main_container');
-    //listener
-    let _addListeners = function() {
-      console.log('listeners add');
-      $('.login').on('click', _showLoginForm);
-      $('.register').on('click', _showRegisterForm);
-    }
-    //events
-    function _showLoginForm() {
-      $('.modal_login').modal('show');
-
-    };
-    function _showRegisterForm() {
-      $('.modal_register').modal('show');
-
-    };
 
     //elements
     let buttons = new Button({
@@ -47,8 +32,9 @@
     });
 
     let formLogin = new ModalForm({
-      el: document.createElement('div'),
-      classAttrs: ['ui', 'modal', 'modal_login'],
+      el: document.createElement('dialog'),
+      ico: 'login',
+      classAttrs: ['ui', 'modal_login'],
       data: {
         title: 'Логин',
         fields: [
@@ -69,8 +55,9 @@
     });
 
     let formRegister = new ModalForm({
-      el: document.createElement('div'),
-      classAttrs: ['ui', 'modal', 'modal_register'],
+      el: document.createElement('dialog'),
+      ico: 'register',
+      classAttrs: ['ui', 'modal_register'],
       data: {
         title: 'Регистрация',
         fields: [
@@ -101,6 +88,24 @@
         ],
       },
     });
+
+    //listener
+    let _addListeners = function() {
+      document.querySelector('.close_icon_login').addEventListener('click', event => {
+        formLogin.el.close();
+      });
+      document.querySelector('.close_icon_register').addEventListener('click', event => {
+        formRegister.el.close();
+      });
+      console.log('add listeners');
+      buttonLogin.el.addEventListener('click', event => {
+        formLogin.el.showModal();
+      });
+      buttonRegister.el.addEventListener('click', event => {
+        formRegister.el.showModal();
+      });
+    }
+    //events
 
     mainContainer.appendChild(buttons.el);
     buttons.el.appendChild(buttonLogin.el);
