@@ -11,13 +11,17 @@
     }
 
     setAttrs (attrs) {
-      Object.keys(attrs).forEach( name => {
-        this.el.setAttribute(name, attrs[name]);
+
+      attrs.forEach( iter => {
+        Object.keys(iter).forEach( name => {
+          console.log(name +' '+iter[name]);
+          this.el.setAttribute(name, iter[name]);
+        })
       })
     }
 
     setClassAttrs (classAttrs) {
-      this.classAttrs.forEach( name => {
+      classAttrs.forEach( name => {
         this.el.classList.add(name);
       })
     }
