@@ -1,20 +1,22 @@
 module.exports = {
 	"swagger": "2.0",
 	"info": {
-		"version": "0.0.3",
-		"title": "TechnoChat API",
-		"description": "**ТехноЧат**"
+		"version": "1.0",
+		"title": "Maze API",
+		"description": "Maze"
 	},
-	"basePath": "/api",
+	"basePath": "/ap",
 	"schemes": ["http"],
    	"host": "http://localhost:3000",
 
 	paths: {
-		'/messages': require('./resources/messages')
+		'/auth': require('./resources/auth'),
+		'/register': require('./resources/register')
 	},
 
 	definitions: {
-		Message: require('./scheme/Message'),
+		Auth: require('./scheme/Auth'),
+		Register: require('./scheme/Register'),
 	}
 
 }
