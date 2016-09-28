@@ -33,10 +33,30 @@
 
     let formLogin = new ModalForm({
       el: document.createElement('dialog'),
-      ico: 'login',
+      form: 'login',
       classAttrs: ['ui', 'modal_login'],
       data: {
         title: 'Логин',
+        controls: [
+					{
+						text: 'Войти',
+            classAttrs: ['ui', 'button', 'login_submit'],
+            attrs : [
+              {
+              type: 'submit'
+              }
+            ],
+					},
+          {
+            text: 'Сбросить',
+            classAttrs: ['ui', 'button', 'login_reset', 'float_right'],
+            attrs : [
+              {
+              type: 'reset'
+              }
+            ],
+          },
+				],
         fields: [
           {
             label: 'Логин',
@@ -56,10 +76,30 @@
 
     let formRegister = new ModalForm({
       el: document.createElement('dialog'),
-      ico: 'register',
+      form: 'register',
       classAttrs: ['ui', 'modal_register'],
       data: {
         title: 'Регистрация',
+        controls: [
+					{
+            text: 'Зарегистрироваться',
+            classAttrs: ['ui', 'button', 'registe_submit'],
+            attrs : [
+              {
+              type: 'submit'
+              }
+            ],
+					},
+          {
+            text: 'Сбросить',
+            classAttrs: ['ui', 'button', 'register_reset', 'float_right'],
+            attrs : [
+              {
+              type: 'reset'
+              }
+            ],
+          },
+				],
         fields: [
           {
             label: 'Email',
@@ -104,8 +144,94 @@
       buttonRegister.el.addEventListener('click', event => {
         formRegister.el.showModal();
       });
+      formLogin.el.addEventListener('submit', _submitLogin);
+      formLogin.el.addEventListener('reset', event => {
+        event.preventDefault();
+        _resetForm(formLogin.form);
+      });
+      formRegister.el.addEventListener('submit', _submitRegister);
+      formRegister.el.addEventListener('reset', event => {
+        event.preventDefault();
+        _resetForm(formRegister.form);
+      });
     }
     //events
+    function _submitLogin(event) {
+      event.preventDefault();
+      console.log('subm login');
+      let formData = formLogin.getFormData();
+      tryEmptyField(formLogin, formData);
+    }
+
+    function _resetForm(form){
+      let el = document.querySelector('form.'+form);
+      el.reset();
+      let errors = Array.from(document.getElementsByClassName('error'));
+      errors.forEach( element => {
+        element.classList.remove('error');
+      });
+    }
+
+    function _submitRegister(event) {
+      event.preventDefault();
+      console.log('subm register');
+      let formData = formRegister.getFormData();
+      console.log(formData);
+      tryEmptyField(formRegister, formData);
+    }
+
+    //validate form
+    function tryEmptyField(form, formData) {
+      let errors = [];
+      let lastErrors = Array.from(document.getElementsByClassName('error'));
+      lastErrors.forEach( element => {
+        element.classList.remove('error');
+      });
+      Object.keys(formData).forEach( field => {
+        if (formData[field] == false){
+          errors.push(field)
+        }
+      });
+      errors.forEach(field => {
+        form.el.querySelector('input[name=' + field + ']').parentNode.classList.add("error");
+      })
+    }
+
+    function validateEmail(field) {
+      let apos = field.indexOf("@");
+      let dotpos = field.lastIndexOf(".");
+      if (apos<1||dotpos-apos<2){
+          return false;
+      }
+      else {
+          return true;
+      }
+
+    function validateUsername(fld) {
+      let error = '',
+          illegalChars = /\W/; // allow letters, numbers, and underscores
+      if ((fld.length < 5) || (fld.length > 15)) {
+          error += "Username от 5 до 15 символов.\n";
+      } else if (illegalChars.test(fld)) {
+          error += "Username только буквы, цифры, нижн.подчеркивание.\n";
+      }
+      return error;
+      }
+
+      function validatePassword(fld, fld2) {
+        let error = "",
+            illegalChars = /[\W_]/; // allow only letters and numbers
+
+        if ((fld.length < 6) || (fld.length > 15)) {
+            error += "Пароль от 6 до 15 символов. \n";
+        } else if (illegalChars.test(fld)) {
+            error += "Пароль только цифры и буквы.\n";
+        } else if (fld != fld2){
+            error += "Повтори пароль правильно"
+        }
+        return error;
+      }
+    }
 
     mainContainer.appendChild(buttons.el);
     buttons.el.appendChild(buttonLogin.el);
