@@ -5,6 +5,7 @@
     //import
     let Button = window.Button;
     let ModalForm = window.ModalForm;
+    let Message = window.Message;
 
     let mainContainer = document.querySelector('.main_container');
 
@@ -38,15 +39,15 @@
       data: {
         title: 'Логин',
         controls: [
-					{
-						text: 'Войти',
+          {
+            text: 'Войти',
             classAttrs: ['ui', 'button', 'login_submit'],
             attrs : [
               {
               type: 'submit'
               }
             ],
-					},
+          },
           {
             text: 'Сбросить',
             classAttrs: ['ui', 'button', 'login_reset', 'float_right'],
@@ -56,7 +57,7 @@
               }
             ],
           },
-				],
+        ],
         fields: [
           {
             label: 'Логин',
@@ -81,7 +82,7 @@
       data: {
         title: 'Регистрация',
         controls: [
-					{
+          {
             text: 'Зарегистрироваться',
             classAttrs: ['ui', 'button', 'registe_submit'],
             attrs : [
@@ -89,7 +90,7 @@
               type: 'submit'
               }
             ],
-					},
+          },
           {
             text: 'Сбросить',
             classAttrs: ['ui', 'button', 'register_reset', 'float_right'],
@@ -99,7 +100,7 @@
               }
             ],
           },
-				],
+        ],
         fields: [
           {
             label: 'Email',
@@ -146,12 +147,12 @@
       });
       formLogin.el.addEventListener('submit', _submitLogin);
       formLogin.el.addEventListener('reset', event => {
-        event.preventDefault();
+        // event.preventDefault();
         _resetForm(formLogin.form);
       });
       formRegister.el.addEventListener('submit', _submitRegister);
       formRegister.el.addEventListener('reset', event => {
-        event.preventDefault();
+        // event.preventDefault();
         _resetForm(formRegister.form);
       });
     }
@@ -165,6 +166,7 @@
 
     function _resetForm(form){
       let el = document.querySelector('form.'+form);
+      console.log(el);
       el.reset();
       let errors = Array.from(document.getElementsByClassName('error'));
       errors.forEach( element => {
@@ -176,8 +178,29 @@
       event.preventDefault();
       console.log('subm register');
       let formData = formRegister.getFormData();
-      console.log(formData);
-      tryEmptyField(formRegister, formData);
+      let empty = tryEmptyField(formRegister, formData);
+      let valid = tryValidate(formRegister, formData);
+      if ( empty || valid ) {
+        let newMess = new Message({
+          el: document.createElement('div'),
+          classAttrs: ['ui', 'error', 'message'],
+        });
+        let head = new Message({
+          el: document.createElement('div'),
+          classAttrs: ['header'],
+          text: 'Заполни форму правильно!'
+        });
+        let content = new Message({
+          el: document.createElement('p'),
+          text: valid
+        });
+        formRegister.el.appendChild(newMess.el);
+        newMess.el.appendChild(head.el);
+        newMess.el.appendChild(content.el);
+      } else {
+        console.log('valid');
+      }
+
     }
 
     //validate form
@@ -195,6 +218,7 @@
       errors.forEach(field => {
         form.el.querySelector('input[name=' + field + ']').parentNode.classList.add("error");
       })
+      return errors;
     }
 
     function validateEmail(field) {
@@ -211,26 +235,46 @@
       let error = '',
           illegalChars = /\W/; // allow letters, numbers, and underscores
       if ((fld.length < 5) || (fld.length > 15)) {
-          error += "Username от 5 до 15 символов.\n";
+          error += "Username от 5 до 15 символов!";
       } else if (illegalChars.test(fld)) {
-          error += "Username только буквы, цифры, нижн.подчеркивание.\n";
+          error += "Username только буквы, цифры, нижн.подчеркивание!";
       }
       return error;
       }
 
-      function validatePassword(fld, fld2) {
+    function validatePassword(fld, fld2) {
         let error = "",
             illegalChars = /[\W_]/; // allow only letters and numbers
 
         if ((fld.length < 6) || (fld.length > 15)) {
-            error += "Пароль от 6 до 15 символов. \n";
+            error += "Пароль от 6 до 15 символов!";
         } else if (illegalChars.test(fld)) {
-            error += "Пароль только цифры и буквы.\n";
+            error += "Пароль только цифры и буквы!";
         } else if (fld != fld2){
-            error += "Повтори пароль правильно"
+            error += "Повтори пароль правильно!"
         }
         return error;
       }
+    }
+
+    function tryValidate(form, formData){
+      let errorMess = '';
+      if (! validateEmail(formData.email)) {
+        form.el.querySelector('input[name=email]').parentNode.classList.add("error");
+        errorMess += 'Заполни правильно Email!';
+      }
+      let userValid = validateUsername(formData.login);
+      // if (userValid) {
+      //   form.el.querySelector('input[name=login]').parentNode.classList.add("error");
+      //   errorMess += userValid;
+      // }
+      let passValid = validatePassword(formData.password, formData.passwordRepeat);
+      // if (passValid) {
+      //   form.el.querySelector('input[name=password]').parentNode.classList.add("error");
+      //   form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add("error");
+      //   errorMess += userValid;
+      // }
+      return errorMess;
     }
 
     mainContainer.appendChild(buttons.el);
