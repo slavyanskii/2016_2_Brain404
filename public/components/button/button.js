@@ -14,7 +14,7 @@
 
       attrs.forEach( iter => {
         Object.keys(iter).forEach( name => {
-          console.log(name +' '+iter[name]);
+          // console.log(name +' '+iter[name]);
           this.el.setAttribute(name, iter[name]);
         })
       })

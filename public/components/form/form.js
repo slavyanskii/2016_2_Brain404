@@ -69,7 +69,7 @@
           attrs: data.attrs,
           classAttrs: data.classAttrs
         });
-        console.log(control.el);
+        // console.log(control.el);
 				this.el.querySelector('.js-controls_' + this.form).appendChild(control.el);
       });
     }

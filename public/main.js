@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+
   if (typeof window === 'object'){
 
     //import
@@ -41,7 +42,7 @@
         controls: [
           {
             text: 'Войти',
-            classAttrs: ['ui', 'button', 'login_submit'],
+            classAttrs: ['ui', 'button', 'login_submit', 'form_button'],
             attrs : [
               {
               type: 'submit'
@@ -50,7 +51,7 @@
           },
           {
             text: 'Сбросить',
-            classAttrs: ['ui', 'button', 'login_reset', 'float_right'],
+            classAttrs: ['ui', 'button', 'login_reset', 'form_button'],
             attrs : [
               {
               type: 'reset'
@@ -84,7 +85,7 @@
         controls: [
           {
             text: 'Зарегистрироваться',
-            classAttrs: ['ui', 'button', 'registe_submit'],
+            classAttrs: ['ui', 'button', 'registe_submit', 'form_button'],
             attrs : [
               {
               type: 'submit'
@@ -93,7 +94,7 @@
           },
           {
             text: 'Сбросить',
-            classAttrs: ['ui', 'button', 'register_reset', 'float_right'],
+            classAttrs: ['ui', 'button', 'register_reset', 'form_button'],
             attrs : [
               {
               type: 'reset'
@@ -130,6 +131,36 @@
       },
     });
 
+    function _createMess(status, header, text) {
+      let newMess = new Message({
+        el: document.createElement('div'),
+        classAttrs: ['ui', status, 'message'],
+      });
+      let head = new Message({
+        el: document.createElement('div'),
+        classAttrs: ['header'],
+        text: header
+      });
+      let content = new Message({
+        el: document.createElement('p'),
+        text: text
+      });
+      newMess.el.appendChild(head.el);
+      newMess.el.appendChild(content.el);
+      return newMess;
+    }
+
+    function _hideMess() {
+      let messError = document.querySelector('div.error.message');
+      let messSuccess = document.querySelector('div.success.message');
+      if( messError != null){
+        messError.remove();
+      }
+      if( messSuccess != null){
+        messSuccess.remove();
+      }
+    }
+
     //listener
     let _addListeners = function() {
       document.querySelector('.close_icon_login').addEventListener('click', event => {
@@ -140,7 +171,7 @@
         formRegister.el.close();
         _resetForm(formRegister.form);
       });
-      console.log('add listeners');
+      // console.log('add listeners');
       buttonLogin.el.addEventListener('click', event => {
         formLogin.el.showModal();
       });
@@ -158,41 +189,45 @@
         _resetForm(formRegister.form);
       });
     }
+
     //events
     function _submitLogin(event) {
       event.preventDefault();
-      console.log('subm login');
-      let mess = document.querySelector('div.error.message');
-      if( mess != null){
-        mess.remove();
-      }
+      _hideMess();
       let formData = formLogin.getFormData();
       let empty = tryEmptyField(formLogin, formData);
       if (empty.length != 0) {
-        let newMess = new Message({
-          el: document.createElement('div'),
-          classAttrs: ['ui', 'error', 'message'],
-        });
-        let head = new Message({
-          el: document.createElement('div'),
-          classAttrs: ['header'],
-          text: 'Заполни пустые поля!'
-        });
-        let content = new Message({
-          el: document.createElement('p'),
-        });
-        formLogin.el.appendChild(newMess.el);
-        newMess.el.appendChild(head.el);
-        newMess.el.appendChild(content.el);
+        let mess = _createMess('error', 'Заполни пустые поля!', '');
+        // console.log(mess.el);
+        formLogin.el.appendChild(mess.el);
       } else {
-        console.log('valid');
-        //here request!
+        // console.log('valid');
+        _sendRequest('/auth', formData, formLogin, 'login');
       }
+    }
+
+    function _submitRegister(event) {
+      event.preventDefault();
+      _hideMess();
+      let formData = formRegister.getFormData();
+      let empty = tryEmptyField(formRegister, formData);
+      let valid = tryValidate(formRegister, formData);
+      // console.log(valid);
+      if ( valid ) {
+        let mess = _createMess('error', 'Заполни форму правильно!', valid);
+        formRegister.el.appendChild(mess.el);
+      } else {
+        // console.log('valid');
+        //here request!!
+        _sendRequest('/registration', formData, formRegister, 'register');
+      }
+
     }
 
     function _resetForm(form){
       let el = document.querySelector('form.'+form);
-      console.log(el);
+      // console.log(el);
+      _hideMess();
       el.reset();
       let mess = document.querySelector('div.error.message');
       if( mess != null){
@@ -204,41 +239,39 @@
       });
     }
 
-    function _submitRegister(event) {
-      event.preventDefault();
-      console.log('subm register');
-      let mess = document.querySelector('div.error.message');
-      if( mess != null){
-        mess.remove();
-      }
-      let formData = formRegister.getFormData();
-      let empty = tryEmptyField(formRegister, formData);
-      let valid = tryValidate(formRegister, formData);
-      console.log(valid);
-      if ( valid ) {
-        let newMess = new Message({
-          el: document.createElement('div'),
-          classAttrs: ['ui', 'error', 'message'],
-        });
-        let head = new Message({
-          el: document.createElement('div'),
-          classAttrs: ['header'],
-          text: 'Заполни форму правильно!'
-        });
-        let content = new Message({
-          el: document.createElement('p'),
-          text: valid
-        });
-        // let parent = document.querySelector('form.register');
-        // parent.insertBefore(newMess.el, parent.firstChild);
-        //formRegister.el.insertBefore(newMess.el, formRegister.el.firstChild);
-        formRegister.el.appendChild(newMess.el);
-        newMess.el.appendChild(head.el);
-        newMess.el.appendChild(content.el);
-      } else {
-        console.log('valid');
-        //here request!!
-      }
+    //requests
+
+    function _sendRequest(to, data, form, clas) {
+      document.querySelector('form.'+clas).classList.add('loading');
+      // console.log('sending request');
+      // if (data['passwordRepeat']) {
+      //   delete data['passwordRepeat'];
+      // }
+      let jsonData = JSON.stringify(data);
+      // console.log(data);
+      let base_url = 'https://maze-backend.herokuapp.com',
+      // let base_url = 'http://172.16.51.243:8080',
+          url = base_url + to;
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          document.querySelector('form.'+clas).classList.remove('loading');
+          if (xhttp.status != 200) {
+            let mess = _createMess('error', xhttp.status, xhttp.responseText);
+            form.el.appendChild(mess.el);
+            Object.keys(data).forEach( field => {
+              form.el.querySelector('input[name=' + field + ']').parentNode.classList.add('error');
+            });
+          } else {
+            let mess = _createMess('success', xhttp.status, xhttp.responseText);
+            form.el.appendChild(mess.el);
+          }
+        }
+      };
+      xhttp.open('POST', url, true);
+      xhttp.setRequestHeader('Content-type', 'application/json');
+      xhttp.send(jsonData);
 
     }
 
@@ -255,14 +288,14 @@
         }
       });
       errors.forEach(field => {
-        form.el.querySelector('input[name=' + field + ']').parentNode.classList.add("error");
+        form.el.querySelector('input[name=' + field + ']').parentNode.classList.add('error');
       })
       return errors;
     }
 
     function validateEmail(field) {
-        let apos = field.indexOf("@");
-        let dotpos = field.lastIndexOf(".");
+        let apos = field.indexOf('@');
+        let dotpos = field.lastIndexOf('.');
         if (apos<1||dotpos-apos<2){
             return false;
         }
@@ -275,48 +308,48 @@
         let error = '',
             illegalChars = /\W/; // allow letters, numbers, and underscores
         if ((fld.length < 5) || (fld.length > 15)) {
-            error += "Username от 5 до 15 символов!";
+            error += 'Username от 5 до 15 символов!';
         } else if (illegalChars.test(fld)) {
-            error += "Username только буквы, цифры, нижн.подчеркивание!";
+            error += 'Username только буквы, цифры, нижн.подчеркивание!';
         }
         return error;
       }
 
     function validatePassword(fld, fld2) {
-        let error = "",
+        let error = '',
             illegalChars = /[\W_]/; // allow only letters and numbers
 
         if ((fld.length < 6) || (fld.length > 15)) {
-            error += "Пароль от 6 до 15 символов!";
+            error += 'Пароль от 6 до 15 символов!';
         }
         if (illegalChars.test(fld)) {
-            error += "Пароль только цифры и буквы!";
+            error += 'Пароль только цифры и буквы!';
         }
         if (fld != fld2){
-            error += "Повтори пароль правильно!"
+            error += 'Повтори пароль правильно!'
         }
         return error;
     }
 
     function tryValidate(form, formData){
-      console.log('try valid');
+      // console.log('try valid');
       let errorMess = '';
-      if (! validateEmail(formData.email)) {
-        form.el.querySelector('input[name=email]').parentNode.classList.add("error");
+      if (!validateEmail(formData.email)) {
+        form.el.querySelector('input[name=email]').parentNode.classList.add('error');
         errorMess += 'Заполни правильно Email!';
       }
       let userValid = validateUsername(formData.login);
       if (userValid) {
-        form.el.querySelector('input[name=login]').parentNode.classList.add("error");
+        form.el.querySelector('input[name=login]').parentNode.classList.add('error');
         errorMess += userValid;
       }
       let passValid = validatePassword(formData.password, formData.passwordRepeat);
       if (passValid) {
-        form.el.querySelector('input[name=password]').parentNode.classList.add("error");
-        form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add("error");
+        form.el.querySelector('input[name=password]').parentNode.classList.add('error');
+        form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add('error');
         errorMess += passValid;
       }
-      console.log(errorMess);
+      // console.log(errorMess);
       return errorMess;
     }
 
