@@ -6,9 +6,10 @@
 class Message {
   constructor(options) {
     this.header = options.header;
-    this.text = options.text;
+    this.text = options.text || '';
     this.classAttrs = options.classAttrs || [];
     this.el = options.el;
+    this._render();
   }
 
   setClassAttrs (classAttrs) {

@@ -134,9 +134,11 @@
     let _addListeners = function() {
       document.querySelector('.close_icon_login').addEventListener('click', event => {
         formLogin.el.close();
+        _resetForm(formLogin.form);
       });
       document.querySelector('.close_icon_register').addEventListener('click', event => {
         formRegister.el.close();
+        _resetForm(formRegister.form);
       });
       console.log('add listeners');
       buttonLogin.el.addEventListener('click', event => {
@@ -160,14 +162,42 @@
     function _submitLogin(event) {
       event.preventDefault();
       console.log('subm login');
+      let mess = document.querySelector('div.error.message');
+      if( mess != null){
+        mess.remove();
+      }
       let formData = formLogin.getFormData();
-      tryEmptyField(formLogin, formData);
+      let empty = tryEmptyField(formLogin, formData);
+      if (empty.length != 0) {
+        let newMess = new Message({
+          el: document.createElement('div'),
+          classAttrs: ['ui', 'error', 'message'],
+        });
+        let head = new Message({
+          el: document.createElement('div'),
+          classAttrs: ['header'],
+          text: 'Заполни пустые поля!'
+        });
+        let content = new Message({
+          el: document.createElement('p'),
+        });
+        formLogin.el.appendChild(newMess.el);
+        newMess.el.appendChild(head.el);
+        newMess.el.appendChild(content.el);
+      } else {
+        console.log('valid');
+        //here request!
+      }
     }
 
     function _resetForm(form){
       let el = document.querySelector('form.'+form);
       console.log(el);
       el.reset();
+      let mess = document.querySelector('div.error.message');
+      if( mess != null){
+        mess.remove();
+      }
       let errors = Array.from(document.getElementsByClassName('error'));
       errors.forEach( element => {
         element.classList.remove('error');
@@ -177,10 +207,15 @@
     function _submitRegister(event) {
       event.preventDefault();
       console.log('subm register');
+      let mess = document.querySelector('div.error.message');
+      if( mess != null){
+        mess.remove();
+      }
       let formData = formRegister.getFormData();
       let empty = tryEmptyField(formRegister, formData);
       let valid = tryValidate(formRegister, formData);
-      if ( empty || valid ) {
+      console.log(valid);
+      if ( valid ) {
         let newMess = new Message({
           el: document.createElement('div'),
           classAttrs: ['ui', 'error', 'message'],
@@ -194,11 +229,15 @@
           el: document.createElement('p'),
           text: valid
         });
+        // let parent = document.querySelector('form.register');
+        // parent.insertBefore(newMess.el, parent.firstChild);
+        //formRegister.el.insertBefore(newMess.el, formRegister.el.firstChild);
         formRegister.el.appendChild(newMess.el);
         newMess.el.appendChild(head.el);
         newMess.el.appendChild(content.el);
       } else {
         console.log('valid');
+        //here request!!
       }
 
     }
@@ -222,24 +261,25 @@
     }
 
     function validateEmail(field) {
-      let apos = field.indexOf("@");
-      let dotpos = field.lastIndexOf(".");
-      if (apos<1||dotpos-apos<2){
-          return false;
+        let apos = field.indexOf("@");
+        let dotpos = field.lastIndexOf(".");
+        if (apos<1||dotpos-apos<2){
+            return false;
+        }
+        else {
+            return true;
       }
-      else {
-          return true;
-      }
+    }
 
     function validateUsername(fld) {
-      let error = '',
-          illegalChars = /\W/; // allow letters, numbers, and underscores
-      if ((fld.length < 5) || (fld.length > 15)) {
-          error += "Username от 5 до 15 символов!";
-      } else if (illegalChars.test(fld)) {
-          error += "Username только буквы, цифры, нижн.подчеркивание!";
-      }
-      return error;
+        let error = '',
+            illegalChars = /\W/; // allow letters, numbers, and underscores
+        if ((fld.length < 5) || (fld.length > 15)) {
+            error += "Username от 5 до 15 символов!";
+        } else if (illegalChars.test(fld)) {
+            error += "Username только буквы, цифры, нижн.подчеркивание!";
+        }
+        return error;
       }
 
     function validatePassword(fld, fld2) {
@@ -248,32 +288,35 @@
 
         if ((fld.length < 6) || (fld.length > 15)) {
             error += "Пароль от 6 до 15 символов!";
-        } else if (illegalChars.test(fld)) {
+        }
+        if (illegalChars.test(fld)) {
             error += "Пароль только цифры и буквы!";
-        } else if (fld != fld2){
+        }
+        if (fld != fld2){
             error += "Повтори пароль правильно!"
         }
         return error;
-      }
     }
 
     function tryValidate(form, formData){
+      console.log('try valid');
       let errorMess = '';
       if (! validateEmail(formData.email)) {
         form.el.querySelector('input[name=email]').parentNode.classList.add("error");
         errorMess += 'Заполни правильно Email!';
       }
       let userValid = validateUsername(formData.login);
-      // if (userValid) {
-      //   form.el.querySelector('input[name=login]').parentNode.classList.add("error");
-      //   errorMess += userValid;
-      // }
+      if (userValid) {
+        form.el.querySelector('input[name=login]').parentNode.classList.add("error");
+        errorMess += userValid;
+      }
       let passValid = validatePassword(formData.password, formData.passwordRepeat);
-      // if (passValid) {
-      //   form.el.querySelector('input[name=password]').parentNode.classList.add("error");
-      //   form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add("error");
-      //   errorMess += userValid;
-      // }
+      if (passValid) {
+        form.el.querySelector('input[name=password]').parentNode.classList.add("error");
+        form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add("error");
+        errorMess += passValid;
+      }
+      console.log(errorMess);
       return errorMess;
     }
 
