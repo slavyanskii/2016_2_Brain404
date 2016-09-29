@@ -243,14 +243,16 @@
 
     function _sendRequest(to, data, form, clas) {
       document.querySelector('form.'+clas).classList.add('loading');
-      // console.log('sending request');
-      // if (data['passwordRepeat']) {
-      //   delete data['passwordRepeat'];
-      // }
       let jsonData = JSON.stringify(data);
+      let initPomise = {
+        mode: 'cors',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: jsonData
+      }
       // console.log(data);
       let base_url = 'https://maze-backend.herokuapp.com',
-      // let base_url = 'http://172.16.51.243:8080',
           url = base_url + to;
 
       var xhttp = new XMLHttpRequest();
@@ -269,8 +271,13 @@
           }
         }
       };
+      xhttp.ontimeout = function() {
+        let mess = _createMess('error', 'Превышен таймаут!');
+        form.el.appendChild(mess.el);
+      }
       xhttp.open('POST', url, true);
       xhttp.setRequestHeader('Content-type', 'application/json');
+      xhttp.timeout = 15000;
       xhttp.send(jsonData);
 
     }
@@ -361,36 +368,28 @@
     mainContainer.appendChild(formRegister.el);
     _addListeners();
   }
-  // let userData = {};
-  // const filter = (str, rules = ['kek', 'hek']) => {
-  //   rules.forEach(rule => {
-  //     const star = '*';
-  //     const stars = star.repeat(rule.length);
-  //     const rgx = new RegExp('\\b' + rule + '\\b', 'gi');
-  //     str = str.replace(rgx, stars);
-  //   });
-  //   return str;
-  // };
-  //
-  // function plural(num) {
-  //   const end = num % 10;
-  //   if ((end > 1 && end < 5) && !(num > 10 && num < 14)) {
-  //     return ' раза!';
-  //   }
-  //   return ' раз!';
-  // }
-  //
-  // function hello() {
-  //   form.hidden = false;
-  //   window.helloWorld.innerHTML = helloText(data.user, result);
-  //   console.log(data, result, plural(result));
-  // }
-  //
-  // if (typeof exports === 'object') { // for NodeJS
-  //   exports.hello = hello;
-  //   exports.filter = filter;
-  //   exports.helloText = helloText;
-  //   exports.plural = plural;
-  // } else {
-  // }
+
+  const filter = (str, rules = ['kek', 'hek']) => {
+    rules.forEach(rule => {
+      const star = '*';
+      const stars = star.repeat(rule.length);
+      const rgx = new RegExp('\\b' + rule + '\\b', 'gi');
+      str = str.replace(rgx, stars);
+    });
+    return str;
+  };
+
+  function plural(num) {
+    const end = num % 10;
+    if ((end > 1 && end < 5) && !(num > 10 && num < 14)) {
+      return 'раза!';
+    }
+    return 'раз!';
+  }
+
+  if (typeof exports === 'object') {
+    // for NodeJS
+    exports.plural = plural;
+  } else {
+  }
 })();
