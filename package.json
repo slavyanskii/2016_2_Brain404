@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "node test.js && ./node_modules/.bin/eslint public/components/message/message.js",
     "lint": "./node_modules/.bin/eslint **/*.js"
   },
   "repository": {

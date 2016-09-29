@@ -12,10 +12,10 @@ class Message {
     this._render();
   }
 
-  setClassAttrs (classAttrs) {
-    classAttrs.forEach( name => {
+  setClassAttrs(classAttrs) {
+    classAttrs.forEach((name) => {
       this.el.classList.add(name);
-    })
+    });
   }
 
   _render() {
@@ -24,5 +24,5 @@ class Message {
     return this;
   }
 }
-//export
+// export
 window.Message = Message;
