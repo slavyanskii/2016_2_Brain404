@@ -2,7 +2,8 @@ language: node_js
 node_js:
 - 6
 before_install:
-  "npm i eslint-plugin-jsx-a11y@latest --save-dev"
+  "npm i eslint-plugin-jsx-a11y@latest --save-dev "
+  "npm i eslint-plugin-import@latest --save-dev"
 deploy:
   provider: heroku
   app:
