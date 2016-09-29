@@ -5,6 +5,7 @@ before_install:
 - "npm i eslint-plugin-jsx-a11y@latest --save-dev"
 - "npm i eslint-plugin-import@latest --save-dev"
 - "npm install --save eslint-config-airbnb"
+- "npm i eslint-plugin-react@latest --save-dev"
 deploy:
   provider: heroku
   app:
