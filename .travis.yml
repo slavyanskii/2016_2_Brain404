@@ -22,4 +22,5 @@ deploy:
       secure: p9YABtwPUHAp/EQTlfhEFOUI+mszFOyejphUcF39SgoZgGLoQwHxiMho/5ImcRbHQNyLb/zZAm6qBBTLo32VBZPNbqTbU/FuiHPu23Cs3S65ypXZ4wTxiSr3KNESs9dG1XJtmNI7dX6dvZkdwkI5+lM1Z+qDScgxTUFEXPzkVQzWVWUh8OMXoagFtRCUYdgY+9y1z6vX5D8tx9spzFwvVZUk9zeVDraTNrnf1N+aOL4mIQ1pZN6Gb40epWsgOow0845X1wqTns1UigTFIrIPLhXDprrPsB3qi84sD2gy9JLNl61mfuldBscwb5jth4KhrBq1lVZgfEY9VORAVSqr1Qs8zlPQpEWMaGWVORpzBjj68ck76C8NL0/R5UGPwuCYJC0Ld4PsStfKhaFNdls8PX0Fo/waPR1NjqyfsXJXgOj6tG2gOgB8YagGCj00qgO1w9OdlZSSR7BkC+hCfelr6R2IFQhwKCh4zlfjuBLu0tESRE/XCZtszdHQenGfLk2WYmoGnEnORcZzbnAJeYcGDhH1Yc76LTwOjlHu/OPdUyM935mozkZfXaNWIE3gFPzliL1My5K0Oy3ZAcHvSe9YbBgQ6af7KPIdEsdgJlcxdx2FiapWih7G1ToFwuSZigiw6LF3uS4i+v3D5q8pf87qm9y2ScOU2BghOAaRFRKkFSg=
   run:
     - "npm i gulp -g"
+    - "cd public/semantic/"
     - "gulp"
