@@ -10,6 +10,7 @@ before_install:
 - "npm i gulp -g"
 - "npm install eslint"
 - "npm run lint"
+- "cd public/sematic/ gulp build"
 deploy:
   provider: heroku
   app:
