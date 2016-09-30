@@ -378,5 +378,9 @@
   if (typeof exports === 'object') {
     // for NodeJS
     exports.plural = plural;
+<<<<<<< HEAD
   }
+=======
+  }
+>>>>>>> a9d1c306d38420129a6f9e4f9e5803e99ef3b4ae
 })();
