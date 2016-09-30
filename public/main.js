@@ -242,7 +242,7 @@
         },
         body: jsonData
       };
-      let base_url = 'https://maze-backend.herokuapp.com',
+      let base_url = 'https://maze-backend.herokuapp.com/api',
           url = base_url + to;
 
       var xhttp = new XMLHttpRequest();
@@ -378,5 +378,5 @@
   if (typeof exports === 'object') {
     // for NodeJS
     exports.plural = plural;
-  } 
+  }
 })();
