@@ -2,13 +2,13 @@ language: node_js
 node_js:
 - 6
 before_install:
-- "npm i eslint-plugin-jsx-a11y@latest -g"
-- "npm i eslint-plugin-import@latest -g"
-- "npm i eslint-config-airbnb -g"
-- "npm i eslint-plugin-react@latest -g"
-- "npm i eslint-plugin-jsx-a11y@latest "
+- "npm i eslint-plugin-jsx-a11y@latest --save-dev"
+- "npm i eslint-plugin-import@latest --save-dev"
+- "npm i eslint-config-airbnb --save-dev"
+- "npm i eslint-plugin-react@latest --save-dev"
+- "npm i eslint-plugin-jsx-a11y@latest --save-dev"
 - "npm i gulp -g"
-- "npm install eslint"
+- "npm install eslint --save-dev"
 - "npm run lint"
 - "cd public/sematic/ gulp build"
 deploy:
