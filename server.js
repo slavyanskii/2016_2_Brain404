@@ -34,11 +34,3 @@ app.listen(process.env.PORT || 3000, () => {
 	console.log(`App started on port ${process.env.PORT || 3000}`);
 });
 
-function emailCount(email) {
-  if (emailObj[email] >= 1) {
-    emailObj[email]++;
-  }  else {
-    emailObj[email] = 1;
-  }
-  return emailObj[email];
-}

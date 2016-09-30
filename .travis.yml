@@ -4,18 +4,20 @@ node_js:
 before_install:
 - "npm i eslint-plugin-jsx-a11y@latest --save-dev"
 - "npm i eslint-plugin-import@latest --save-dev"
-- "npm install --save eslint-config-airbnb"
+- "npm i eslint-config-airbnb --save-dev"
 - "npm i eslint-plugin-react@latest --save-dev"
-- "npm install -g gulp-install"
+- "npm i eslint-plugin-jsx-a11y@latest --save-dev"
+- "npm i gulp -g"
+- "npm install eslint --save-dev"
+- "npm run lint"
 deploy:
   provider: heroku
   app:
     dev: brain404frontend
     master: brain404
   api_key:
+    master:
+      secure: DxjPkbV9q9IgxMjveleb0sr/MGOoPwfYmnaTBGU0qaeg5gQ4rVJnNn9LOnkbcJoOsogxVIiYMtz541HEQDyhfSgA9uOT+La3VV2hXkO0VnozdXQ6ASIyNhZ7oz/79ScKZUqUwbddzjksUg+dgmo7V//qBjeoIOGJZnHgbI+ZE2LpYzBioQSTifKjbTZBXVTYYji3+x7FbkOTir9/gagF18azTV+RrSQH8FrxjY17gmHxNrZX0KwNOQPljeS6YHVmIOwWetxnhoLZpnR84OewreKgVuBhtq7aEF3vH4x0oXnflnB5q4iWB9OVjNi/wWACupt9T7r1I6J+iU38Pc806Aa7wDmGMoI2zJhCb9TpR1536+xxKf32g/huCpZawXl5QFlr+2abMZq1wmqPlmJcVKjYY0bHWSVUzN7cvYz2INp0D6gtE7flDA8OmaR8n9zD1A3CD/ggnTo9uDKLNW8u+3STtTubg8GSksSSGIsQeoANQ4trrrpeh7yLfDJXAssnZYnO+w/Gsv8gQagtEi0JCuPKcPgU7fdRtqo7ZFLsEl85K7pMkqEZELLgjVcjjQuNxN3uju5KsbvOdo856LrfWPHqFqIqx0kukP0jVS9uieZ9OU1Elx4cNaKutBnZkL0yhZE+iK1a79k8OSzo+prq3jNeVvkv7jY8ZsOS8CMbhro=
     dev:
       secure: p9YABtwPUHAp/EQTlfhEFOUI+mszFOyejphUcF39SgoZgGLoQwHxiMho/5ImcRbHQNyLb/zZAm6qBBTLo32VBZPNbqTbU/FuiHPu23Cs3S65ypXZ4wTxiSr3KNESs9dG1XJtmNI7dX6dvZkdwkI5+lM1Z+qDScgxTUFEXPzkVQzWVWUh8OMXoagFtRCUYdgY+9y1z6vX5D8tx9spzFwvVZUk9zeVDraTNrnf1N+aOL4mIQ1pZN6Gb40epWsgOow0845X1wqTns1UigTFIrIPLhXDprrPsB3qi84sD2gy9JLNl61mfuldBscwb5jth4KhrBq1lVZgfEY9VORAVSqr1Qs8zlPQpEWMaGWVORpzBjj68ck76C8NL0/R5UGPwuCYJC0Ld4PsStfKhaFNdls8PX0Fo/waPR1NjqyfsXJXgOj6tG2gOgB8YagGCj00qgO1w9OdlZSSR7BkC+hCfelr6R2IFQhwKCh4zlfjuBLu0tESRE/XCZtszdHQenGfLk2WYmoGnEnORcZzbnAJeYcGDhH1Yc76LTwOjlHu/OPdUyM935mozkZfXaNWIE3gFPzliL1My5K0Oy3ZAcHvSe9YbBgQ6af7KPIdEsdgJlcxdx2FiapWih7G1ToFwuSZigiw6LF3uS4i+v3D5q8pf87qm9y2ScOU2BghOAaRFRKkFSg=
-    master:
-      secure: #lex
-  on:
-    dev: dev
+  run: "heroku run gulp"

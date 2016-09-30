@@ -1,5 +1,5 @@
 {
-  "base": "semantic/",
+  "base": "public/semantic/",
   "paths": {
     "source": {
       "config": "src/theme.config",
@@ -68,3 +68,4 @@
   ],
   "version": "2.2.4"
 }
+
