@@ -12,7 +12,7 @@
     "url": "git+https://github.com/frontend-park-mail-ru/2016_2_Brain404.git"
   },
   "engines": {
-    "node": "6.3.1"
+    "node": "6.7.0"
   },
   "keywords": [],
   "author": "",
