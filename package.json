@@ -1,18 +1,18 @@
 {
-  "name": "sample",
+  "name": "brain404",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js && ./node_modules/.bin/eslint public/components/message/message.js",
-    "lint": "./node_modules/.bin/eslint **/*.js"
+    "test": "node test.js",
+    "lint": "npm run"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/frontend-park-mail-ru/2016_2_Brain404.git"
   },
   "engines": {
-    "node": "6.3.1"
+    "node": "6.7.0"
   },
   "keywords": [],
   "author": "",
