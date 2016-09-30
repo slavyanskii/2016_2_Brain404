@@ -12,8 +12,8 @@ module.exports =  {
 		"password": {
 			"description": "Password",
 			"type": "string",
-			"minLength": 2,
- 			"maxLength": 140
+			"minLength": 6,
+ 			"maxLength": 15
 		},
 		"email": {
 			"description": "Email",
