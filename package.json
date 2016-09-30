@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node test.js",
-    "lint": "./node_modules/.bin/eslint public/components/message/message.js"
+    "lint": "./node_modules/.bin/eslint **/*.js;exit 0"
   },
   "repository": {
     "type": "git",
