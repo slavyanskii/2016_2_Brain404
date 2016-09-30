@@ -7,10 +7,9 @@ before_install:
 - "npm i eslint-config-airbnb --save-dev"
 - "npm i eslint-plugin-react@latest --save-dev"
 - "npm i eslint-plugin-jsx-a11y@latest --save-dev"
-#- "npm i gulp -g"
+- "npm i gulp -g"
 - "npm install eslint --save-dev"
 - "npm run lint"
-script: gulp
 deploy:
   provider: heroku
   app:
