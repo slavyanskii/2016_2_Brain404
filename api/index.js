@@ -5,7 +5,7 @@ module.exports = {
 		"title": "Maze API",
 		"description": "Maze"
 	},
-	"basePath": "/ap",
+	"basePath": "/api",
 	"schemes": ["http"],
    	"host": "http://localhost:3000",
 

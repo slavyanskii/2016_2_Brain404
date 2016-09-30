@@ -171,7 +171,6 @@
         formRegister.el.close();
         _resetForm(formRegister.form);
       });
-      // console.log('add listeners');
       buttonLogin.el.addEventListener('click', event => {
         formLogin.el.showModal();
       });
@@ -180,12 +179,10 @@
       });
       formLogin.el.addEventListener('submit', _submitLogin);
       formLogin.el.addEventListener('reset', event => {
-        // event.preventDefault();
         _resetForm(formLogin.form);
       });
       formRegister.el.addEventListener('submit', _submitRegister);
       formRegister.el.addEventListener('reset', event => {
-        // event.preventDefault();
         _resetForm(formRegister.form);
       });
     }
@@ -198,10 +195,8 @@
       let empty = tryEmptyField(formLogin, formData);
       if (empty.length != 0) {
         let mess = _createMess('error', 'Заполни пустые поля!', '');
-        // console.log(mess.el);
         formLogin.el.appendChild(mess.el);
       } else {
-        // console.log('valid');
         _sendRequest('/auth', formData, formLogin, 'login');
       }
     }
@@ -212,13 +207,10 @@
       let formData = formRegister.getFormData();
       let empty = tryEmptyField(formRegister, formData);
       let valid = tryValidate(formRegister, formData);
-      // console.log(valid);
       if ( valid ) {
         let mess = _createMess('error', 'Заполни форму правильно!', valid);
         formRegister.el.appendChild(mess.el);
       } else {
-        // console.log('valid');
-        //here request!!
         _sendRequest('/registration', formData, formRegister, 'register');
       }
 
@@ -226,7 +218,6 @@
 
     function _resetForm(form){
       let el = document.querySelector('form.'+form);
-      // console.log(el);
       _hideMess();
       el.reset();
       let mess = document.querySelector('div.error.message');
@@ -250,8 +241,7 @@
           'Content-type': 'application/json'
         },
         body: jsonData
-      }
-      // console.log(data);
+      };
       let base_url = 'https://maze-backend.herokuapp.com',
           url = base_url + to;
 
@@ -339,7 +329,6 @@
     }
 
     function tryValidate(form, formData){
-      // console.log('try valid');
       let errorMess = '';
       if (!validateEmail(formData.email)) {
         form.el.querySelector('input[name=email]').parentNode.classList.add('error');
@@ -356,7 +345,6 @@
         form.el.querySelector('input[name=passwordRepeat]').parentNode.classList.add('error');
         errorMess += passValid;
       }
-      // console.log(errorMess);
       return errorMess;
     }
 

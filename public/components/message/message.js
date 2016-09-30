@@ -1,8 +1,3 @@
-// <div class="ui error message">
-//     <div class="header">Action Forbidden</div>
-//     <p>You can only sign up for an account once with a given e-mail address.</p>
-//   </div>
-
 class Message {
   constructor(options) {
     this.header = options.header;
@@ -24,5 +19,5 @@ class Message {
     return this;
   }
 }
-// export
+
 window.Message = Message;

@@ -22,5 +22,5 @@ module.exports =  {
 		}
 	},
 
-	"required": ["email", "message", "id"]
+	"required": ["login", "password", "email"]
 };
