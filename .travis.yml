@@ -2,10 +2,10 @@ language: node_js
 node_js:
 - 6
 before_install:
-- "npm i eslint-plugin-jsx-a11y@latest"
-- "npm i eslint-plugin-import@latest"
-- "npm i eslint-config-airbnb"
-- "npm i eslint-plugin-react@latest"
+- "npm i eslint-plugin-jsx-a11y@latest -g"
+- "npm i eslint-plugin-import@latest -g"
+- "npm i eslint-config-airbnb -g"
+- "npm i eslint-plugin-react@latest -g"
 - "npm i gulp -g"
 deploy:
   provider: heroku
