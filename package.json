@@ -1,36 +1,25 @@
 {
-  "name": "brain404",
+  "name": "sample",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
-    "lint": "./node_modules/.bin/eslint public/components/message/message.js;exit 0"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/frontend-park-mail-ru/2016_2_Brain404.git"
+    "url": "git+https://github.com/frontend-park-mail-ru/sample.git"
   },
   "engines": {
-    "node": "6.7.0"
+    "node": "6.3.1"
   },
   "keywords": [],
   "author": "",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "gulp": "^3.8.10",
+	"technolibs": "1.1.0",
     "json-schema-mock": "0.0.8",
-    "semantic-ui": "^2.2.4",
-    "techno-gendoc": "0.4.1",
-    "technolibs": "1.1.0",
-    "technologger": "1.0.1"
-  },
-  "devDependencies": {
-    "eslint": "^3.5.0",
-    "eslint-plugin-import": "^2.0.0",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "^6.3.0"
+	"techno-gendoc": "0.3.0"
   }
 }
